@@ -72,6 +72,9 @@ p{
         position: relative;
         font: weight 400px;;
     }
+    span{
+        font-size: 14px;
+    }
    
 }
 
@@ -89,5 +92,8 @@ p{
         margin-bottom: 40px;
         position: relative;
         font: weight 400px;;
+    }
+    span{
+        font-size: 14px;
     }
 }
