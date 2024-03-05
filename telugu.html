@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily dose</title>
+    <link rel="stylesheet" href="telugu.css">
+    <script src="https://requirejs.org/docs/release/2.3.6/comments/require.js"></script>
+    
+</head>
+<body>
+
+    <div class="main-box">
+        <h2>నేటి వచనము</h2>
+        <blockquote id="msg">loading...</blockquote>
+        <span id="verse"> Loading...</span>
+        <p id="timer">next verse in</p>
+        <p>Sharon Faith ministries</p>
+    </div>
+
+
+    <script>
+        let len = 13;
+        function fetchDataAndDisplay(n){
+            fetch('teluug.json')
+            .then(response=>response.json())
+            .then(data=>{
+                var messageElement = document.getElementById("msg");
+                var verseElement = document.getElementById("verse");
+
+                messageElement.innerText = data[n].message;
+                verseElement.innerText = data[n].verse;
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function getDistance(baseDate) {
+            var now = new Date().getTime();
+            var distance = baseDate.getTime() - now;
+            return distance;
+        }
+        
+        window.onload = function() {
+            let n = 0;
+            fetchDataAndDisplay(0);
+            var baseDate = new Date("Mar 3, 2024 24:00:00");
+            setInterval(function() {
+                let distance = getDistance(baseDate);
+                while (distance < 0) {
+                    baseDate.setDate(baseDate.getDate() + 1);
+                    distance = getDistance(baseDate);
+                    n = (n+1)%len;
+                    fetchDataAndDisplay(n);
+                }
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("timer").innerHTML = hours + ": "
+                + minutes + ": " + seconds;
+            }, 1000);
+        };
+    </script>
+
+    </body>
+</html>
